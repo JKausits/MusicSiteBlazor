@@ -1,0 +1,13 @@
+﻿@inject IImageService imageService;
+
+<MudCarousel AutoCycle ShowArrows ShowBullets EnableSwipeGesture TData="object" Style="height:600px">
+    @foreach (var image in imageService.Images)
+    {
+        <MudCarouselItem Class="d-flex justify-center">
+            <MudImage Src="@image.Url" ObjectFit="ObjectFit.Cover"/>
+        </MudCarouselItem>
+    }
+</MudCarousel>
+
+@code {
+}

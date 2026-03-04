@@ -1,0 +1,17 @@
+﻿@inject IShowService showService;
+
+<MudText Typo="Typo.h5" Class="my-3">Upcoming Shows</MudText>
+<MudDataGrid Items="showService.UpcomingShows">
+    <Columns>
+        <PropertyColumn Property="x => x.Venue.Name" Title="Where" />
+        <PropertyColumn Property="x => x.StartAt.FormatDateRange(x.EndAt)" Title="When" />
+    </Columns>
+</MudDataGrid>
+
+@code {
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+        await showService.FetchUpcomingShows();
+    }
+}

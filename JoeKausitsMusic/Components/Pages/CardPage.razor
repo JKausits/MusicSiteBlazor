@@ -1,0 +1,117 @@
+﻿@page "/card-page";
+@using MudBlazor.Interop
+@inject IResizeObserverFactory ResizeObserverFactory
+@inject NavigationManager NavigationManager;
+@implements IAsyncDisposable
+
+<MudGrid>
+    <MudItem xs="12" md="12" Class="d-flex justify-center">
+        <div class="d-flex flex-column align-center">
+            <MudImage Src="/imgs/DSC_0312.jpg" Class="rounded-circle" Height="200" Width="200" ObjectFit=ObjectFit.Cover" ObjectPosition="ObjectPosition.Top" />
+            <MudText Typo="Typo.h3">
+                Joe Kausits
+            </MudText>
+            <MudText Typo="Typo.h5" Class="mud-text-secondary">
+                Country Artist
+            </MudText>
+        </div>
+    </MudItem>
+    @foreach(var card in Cards)
+    {
+      <MudItem md="2" xs="6" @onclick="() => NavigationManager.NavigateTo(card.Url, true)" Class="cursor-pointer">
+            <div @ref="_divReference" style="'min-height': @_divWidth">
+                <MudPaper Outlined Height="@_divWidth" Class="d-flex justify-center align-center">
+                        @if (string.IsNullOrWhiteSpace(card.Icon))
+                        {
+                            <MudText Typo="Typo.h6">@card.Text</MudText>
+                        }else
+                        {
+                            <MudIcon Icon="@card.Icon" Style="font-size: 4rem;" />
+                        }
+              </MudPaper>   
+            </div>
+      </MudItem>  
+    }
+</MudGrid>
+
+@code {
+    private class Card
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Text { get; set; } = string.Empty;
+        public string? Icon { get; set; }
+        public string Url { get; set; } = string.Empty;
+    }
+
+    private ICollection<Card> Cards = [
+      new(){
+        Name = "website",
+        Text = "JoeKausits.com",
+        Url = "/",
+      },
+      new(){
+        Name = "facebook",
+        Text = "Facebook",
+        Url = "https://www.facebook.com/joekausitsmusic",
+        Icon = Icons.Custom.Brands.Facebook,
+      },
+      new(){
+        Name = "youtube",
+        Text = "Youtube",
+        Url = "https://www.youtube.com/@JoeKMusics",
+        Icon = Icons.Custom.Brands.YouTube,
+      },
+      new(){
+        Name = "tiktok",
+        Text = "TikTok",
+        Url = "https://www.tiktok.com/@joek.music",
+        Icon = Icons.Custom.Brands.TikTok,
+      },
+      new(){
+        Name = "venmo",
+        Text = "Venmo",
+        Url = "https://account.venmo.com/u/Joe-Kausits",
+      },
+      new(){
+        Name = "email",
+        Icon = Icons.Material.Filled.Email,
+        Url = "mailto:JoeKausitsMusic@gmail.com",
+        Text = "Email",
+      },
+      new(){
+        Name = "phone",
+        Icon = Icons.Material.Filled.Phone,
+        Url = "tel:4407445152",
+        Text = "Phone",
+      },
+];
+
+    private IResizeObserver _resizeObserver;
+    private ElementReference _divReference;
+    private string _divWidth;
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            _resizeObserver = ResizeObserverFactory.Create();
+            _resizeObserver.OnResized += ResizeObserverOnResized;
+            await _resizeObserver.Observe(_divReference);
+            _divWidth = $"{_resizeObserver.GetWidth(_divReference)}px";
+            StateHasChanged();
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_resizeObserver != null) await _resizeObserver.DisposeAsync();
+    }
+
+    private void ResizeObserverOnResized(IDictionary<ElementReference, BoundingClientRect> changes)
+    {
+        _divWidth = $"{changes.Values.LastOrDefault()?.Width ?? 0}px";
+        StateHasChanged();
+    }
+}

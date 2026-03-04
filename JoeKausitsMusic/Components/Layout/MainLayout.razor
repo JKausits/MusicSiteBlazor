@@ -1,23 +1,20 @@
 ﻿@inherits LayoutComponentBase
+    
+<PageTitle>Joe Kausits Music</PageTitle>
+@* Required *@
+<MudThemeProvider IsDarkMode />
+<MudPopoverProvider />
 
-<div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+@* Needed for dialogs *@
+<MudDialogProvider />
 
-    <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+@* Needed for snackbars *@
+<MudSnackbarProvider />
+<MudLayout>
+    <NavMenu />
+    <MudMainContent class="mx-3 mt-12 mb-16">
             @Body
-        </article>
-    </main>
-</div>
+    </MudMainContent>
+    <Footer />
+</MudLayout>
 
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
-</div>

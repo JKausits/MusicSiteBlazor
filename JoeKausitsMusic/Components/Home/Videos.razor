@@ -1,0 +1,51 @@
+﻿@inject IVideoService videoService;
+@inject IBrowserViewportService BrowserViewportService;
+@implements IBrowserViewportObserver
+@implements IAsyncDisposable
+
+<MudTabs Position="TabPosition" Outlined Border ApplyEffectsToContainer Color="Color.Dark">
+    @foreach(var video in videoService.HomePageVideos)
+    {
+        <MudTabPanel Text="@video.Title" Class="d-flex justify-center">
+            <MudPaper Height="560px" Width="100%">
+                    <iframe src="@video.Url"
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                            allowfullscreen />
+            </MudPaper>
+        </MudTabPanel>
+    }
+</MudTabs>
+
+
+    @code{
+
+    private Position TabPosition;
+    public Guid Id { get; } = Guid.NewGuid(); // The id of the observer
+    public ResizeOptions ResizeOptions { get; } = new() // The observer options
+    {
+        NotifyOnBreakpointOnly = false
+    };
+
+    private BrowserWindowSize _currentBrowserWindowSize = new();
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        await base.OnAfterRenderAsync(firstRender);
+
+        if (firstRender)
+        {
+            await BrowserViewportService.SubscribeAsync(this, fireImmediately: true);
+        }
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await BrowserViewportService.UnsubscribeAsync(this);
+    }
+
+    public Task NotifyBrowserViewportChangeAsync(BrowserViewportEventArgs browserViewportEventArgs)
+    {
+        TabPosition = browserViewportEventArgs.BrowserWindowSize.Width > 1000 ? Position.Left : Position.Top;
+        return InvokeAsync(StateHasChanged);
+    }
+}

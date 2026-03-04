@@ -1,0 +1,36 @@
+﻿
+<MudAppBar Bottom Fixed Color="Color.Dark" Elevation="1" Dense>
+    <div class="d-flex justify-center mud-width-full">
+        @foreach(var icon in FooterIcons)
+        {
+            <MudIconButton Icon="@icon.Icon" Href="@icon.Url" Target="_blank"/>
+        }
+    </div>
+</MudAppBar>
+
+@code {
+    private class FooterIcon
+    {
+        public string Icon { get; set; }
+        public string Url { get; set; }
+    }
+
+    private ICollection<FooterIcon> FooterIcons = new List<FooterIcon>
+    {
+        new()
+        {
+            Icon = Icons.Custom.Brands.Facebook,
+            Url = "https://www.facebook.com/joekausitsmusic",
+        },
+        new()
+        {
+            Icon = Icons.Custom.Brands.TikTok,
+            Url = "https://www.tiktok.com/@joek.music"
+        },
+        new()
+        {
+            Icon = Icons.Custom.Brands.YouTube,
+            Url = "https://www.youtube.com/@JoeKMusics"
+        }
+    };
+}

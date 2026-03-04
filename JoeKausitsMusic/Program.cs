@@ -1,10 +1,17 @@
+global using JoeKausitsMusic.Models;
+global using JoeKausitsMusic.Services;
 using JoeKausitsMusic.Components;
+using MudBlazor.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+builder.Services.AddMudServices();
+builder.Services.AddSingleton<IImageService, ImageService>();
+builder.Services.AddSingleton<IVideoService, VideoService>();
+builder.Services.AddSingleton<IShowService, ShowService>();
 
 var app = builder.Build();
 
