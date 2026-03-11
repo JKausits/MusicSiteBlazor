@@ -4,7 +4,7 @@
 <MudDataGrid Items="showService.UpcomingShows">
     <Columns>
         <PropertyColumn Property="x => x.Venue.Name" Title="Where" />
-        <TemplateColumn>
+        <TemplateColumn Title="When">
             <CellTemplate>
                 @(FormatDateTime(context.Item))
             </CellTemplate>
