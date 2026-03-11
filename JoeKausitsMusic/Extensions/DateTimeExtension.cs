@@ -9,10 +9,10 @@ namespace JoeKausitsMusic.Extensions
             if (startAt.Date == endAt.Date)
             {
                 //return $"{startAt:MMMM d} from {startAt:h:mm tt}-{endAt:h:mm tt}";
-                return $"{startAt.FormatDate()} {startAt:h:mm}-{endAt:h:mm tt}";
+                return $"{startAt.FormatDate()}<br/>{startAt:h:mm}-{endAt:h:mm tt}";
             }
 
-            return $"{startAt.FormatDate()} {startAt:h:mm tt}-{endAt.FormatDate()} {endAt:h:mm tt}";
+            return $"{startAt.FormatDate()} {startAt:h:mm tt} -<br/>{endAt.FormatDate()} {endAt:h:mm tt}";
         }
 
         public static string FormatDate(this DateTime date)

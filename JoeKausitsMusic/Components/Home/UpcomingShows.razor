@@ -4,7 +4,11 @@
 <MudDataGrid Items="showService.UpcomingShows">
     <Columns>
         <PropertyColumn Property="x => x.Venue.Name" Title="Where" />
-        <PropertyColumn Property="x => x.StartAt.FormatDateRange(x.EndAt)" Title="When" />
+        <TemplateColumn>
+            <CellTemplate>
+                @(FormatDateTime(context.Item))
+            </CellTemplate>
+        </TemplateColumn>
     </Columns>
 </MudDataGrid>
 
@@ -13,5 +17,10 @@
     {
         await base.OnInitializedAsync();
         await showService.FetchUpcomingShows();
+    }
+
+    MarkupString FormatDateTime(ShowViewModel show)
+    {
+        return (MarkupString)show.StartAt.FormatDateRange(show.EndAt);
     }
 }
