@@ -3,8 +3,12 @@
 <MudText Typo="Typo.h5" Class="my-3">Upcoming Shows</MudText>
 <MudDataGrid Items="showService.UpcomingShows">
     <Columns>
-        <PropertyColumn Property="x => x.Venue.Name" Title="Where" />
-        <TemplateColumn Title="When">
+        <TemplateColumn Title="Where" HeaderStyle="font-size: 1.2rem;" CellStyle="font-size: 1.2rem;">
+            <CellTemplate>
+                @(context.Item.Venue.Name)
+            </CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn Title="When" HeaderStyle="font-size: 1.2rem;" CellStyle="font-size: 1.2rem;">
             <CellTemplate>
                 @(FormatDateTime(context.Item))
             </CellTemplate>
